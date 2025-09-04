@@ -1,10 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 
-type Counter = {
-    value: number;
-};
-
 @Component({
     selector: 'home',
     templateUrl: './home.component.html',
@@ -13,14 +9,15 @@ type Counter = {
     imports: [MatTabGroup, MatTab],
 })
 export class HomeComponent {
-    public counter = signal<Counter>({
-        value: 100,
-    });
+    public values = signal<number[]>([0]);
 
-    public increment(): void {
-        this.counter.update((counter) => ({
-            ...counter,
-            value: counter.value + 1,
-        }));
+    public append(): void {
+        // const values = this.values();
+        // const last = values[values.length - 1];
+        // this.values.set([...values, last + 1]);
+        this.values.update((values) => [
+            ...values,
+            values[values.length - 1] + 1,
+        ]);
     }
 }
