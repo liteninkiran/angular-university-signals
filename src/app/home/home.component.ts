@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 
 @Component({
@@ -9,15 +9,11 @@ import { MatTab, MatTabGroup } from '@angular/material/tabs';
     imports: [MatTabGroup, MatTab],
 })
 export class HomeComponent {
-    public values = signal<number[]>([0]);
+    public counter = signal<number>(0);
+    public tenTimesCounter = computed(() => this.counter() * 10);
+    public hundredTimesCounter = computed(() => this.tenTimesCounter() * 10);
 
-    public append(): void {
-        // const values = this.values();
-        // const last = values[values.length - 1];
-        // this.values.set([...values, last + 1]);
-        this.values.update((values) => [
-            ...values,
-            values[values.length - 1] + 1,
-        ]);
+    public increment(): void {
+        this.counter.update((val) => val + 1);
     }
 }
