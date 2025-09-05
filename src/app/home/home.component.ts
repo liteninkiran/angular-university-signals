@@ -1,4 +1,12 @@
-import { Component, effect, signal } from '@angular/core';
+import {
+    afterNextRender,
+    Component,
+    effect,
+    inject,
+    Injector,
+    runInInjectionContext,
+    signal,
+} from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 
 @Component({
@@ -11,9 +19,15 @@ import { MatTab, MatTabGroup } from '@angular/material/tabs';
 export class HomeComponent {
     public counter = signal<number>(0);
 
-    public constructor() {
-        effect(() => {
-            console.log(`Counter: ${this.counter()}`);
+    private injector = inject(Injector);
+
+    constructor() {
+        afterNextRender(() => {
+            runInInjectionContext(this.injector, () => {
+                effect(() => {
+                    console.log(`Counter: ${this.counter()}`);
+                });
+            });
         });
     }
 
