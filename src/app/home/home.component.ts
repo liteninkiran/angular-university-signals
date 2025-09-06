@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { Course } from '../models/course.model';
+import { CoursesService } from '../services/courses.service';
 
 @Component({
     selector: 'home',
@@ -9,5 +11,7 @@ import { MatTab, MatTabGroup } from '@angular/material/tabs';
     imports: [MatTabGroup, MatTab],
 })
 export class HomeComponent {
+    public courses = signal<Course[]>([]);
+    public coursesService = inject(CoursesService);
     constructor() {}
 }
