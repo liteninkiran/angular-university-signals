@@ -1,3 +1,5 @@
-export const environment = {
+import { Environment } from '../app/models/environment.model';
 
+export const environment: Environment = {
+    apiRoot: '',
 };

@@ -1,13 +1,7 @@
-import {
-    afterNextRender,
-    Component,
-    inject,
-    OnInit,
-    signal,
-} from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { Course } from '../models/course.model';
-import { CoursesServiceWithFetch } from '../services/courses-fetch.service';
+import { CoursesService } from '../services/courses.service';
 
 @Component({
     selector: 'home',
@@ -16,30 +10,17 @@ import { CoursesServiceWithFetch } from '../services/courses-fetch.service';
     standalone: true,
     imports: [MatTabGroup, MatTab],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
     public courses = signal<Course[]>([]);
-    public coursesService = inject(CoursesServiceWithFetch);
+    public coursesService = inject(CoursesService);
 
     constructor() {
-        afterNextRender(() => {
-            this.loadCourses().then(() =>
-                console.log('All courses loaded', this.courses()),
-            );
-        });
-    }
-
-    public ngOnInit(): void {
-        // this.loadCourses().then(() =>
-        //     console.log('All courses loaded', this.courses()),
-        // );
+        this.loadCourses().then(() =>
+            console.log('All courses loaded', this.courses()),
+        );
     }
 
     public async loadCourses(): Promise<void> {
-        // this.coursesService
-        //     .loadAllCourses()
-        //     .then((courses) => this.courses.set(courses))
-        //     .catch((error) => console.log(error));
-
         try {
             const courses = await this.coursesService.loadAllCourses();
             this.courses.set(courses);
