@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { Course } from '../models/course.model';
 import { CoursesService } from '../services/courses.service';
+import { CoursesCardListComponent } from '../courses-card-list/courses-card-list.component';
 
 const filterBeginner = (course: Course) => course.category === 'BEGINNER';
 const filterAdvanced = (course: Course) => course.category === 'ADVANCED';
@@ -11,7 +12,7 @@ const filterAdvanced = (course: Course) => course.category === 'ADVANCED';
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
     standalone: true,
-    imports: [MatTabGroup, MatTab],
+    imports: [MatTabGroup, MatTab, CoursesCardListComponent],
 })
 export class HomeComponent {
     #courses = signal<Course[]>([]);
