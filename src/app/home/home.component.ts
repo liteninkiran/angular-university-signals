@@ -1,4 +1,10 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+    afterNextRender,
+    Component,
+    inject,
+    OnInit,
+    signal,
+} from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { Course } from '../models/course.model';
 import { CoursesServiceWithFetch } from '../services/courses-fetch.service';
@@ -15,12 +21,18 @@ export class HomeComponent implements OnInit {
     public coursesService = inject(CoursesServiceWithFetch);
 
     constructor() {
-        this.loadCourses().then(() =>
-            console.log('All courses loaded', this.courses()),
-        );
+        afterNextRender(() => {
+            this.loadCourses().then(() =>
+                console.log('All courses loaded', this.courses()),
+            );
+        });
     }
 
-    public ngOnInit(): void {}
+    public ngOnInit(): void {
+        // this.loadCourses().then(() =>
+        //     console.log('All courses loaded', this.courses()),
+        // );
+    }
 
     public async loadCourses(): Promise<void> {
         // this.coursesService
