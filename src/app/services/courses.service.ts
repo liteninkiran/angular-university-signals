@@ -18,4 +18,25 @@ export class CoursesService {
         const response = await firstValueFrom(courses$);
         return response.courses;
     };
+
+    public createCourse = async (course: Partial<Course>): Promise<Course> => {
+        const url = `${this.env.apiRoot}/courses`;
+        const course$ = this.http.post<Course>(url, course);
+        return firstValueFrom(course$);
+    };
+
+    public saveCourse = async (
+        courseId: string,
+        changes: Partial<Course>,
+    ): Promise<Course> => {
+        const url = `${this.env.apiRoot}/courses/${courseId}`;
+        const course$ = this.http.put<Course>(url, changes);
+        return firstValueFrom(course$);
+    };
+
+    public deleteCourse = async (courseId: string): Promise<Course> => {
+        const url = `${this.env.apiRoot}/courses/${courseId}`;
+        const delete$ = this.http.delete<Course>(url);
+        return firstValueFrom(delete$);
+    };
 }
