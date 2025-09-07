@@ -14,7 +14,6 @@ export class CoursesService {
 
     public loadAllCourses = async (): Promise<Course[]> => {
         const url = `${this.env.apiRoot}/courses`;
-        console.log(url);
         const courses$ = this.http.get<GetCoursesResponse>(url);
         const response = await firstValueFrom(courses$);
         return response.courses;
