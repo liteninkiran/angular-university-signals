@@ -1,0 +1,27 @@
+@for (course of courses(); track course.id) {
+    <div class="course-card">
+
+        <!-- Header -->
+        <div class="course-header">
+            <span class="course-title">{{ course.title }}</span>
+        </div>
+
+        <!-- Image -->
+        <img class="course-image" [src]="course.iconUrl" alt="Course Image"/>
+
+        <!-- Description -->
+        <div class="course-description">
+            <p>{{ course.longDescription }}</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="course-actions">
+            <button class="btn">
+                View Course
+            </button>
+
+            <img class="delete" src="/assets/icons/delete.svg" alt="Delete Button"/>
+        </div>
+
+    </div>
+}

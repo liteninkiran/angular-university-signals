@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
-import { Course } from '../models/course.model';
+import { Course, sortCoursesBySeqNo } from '../models/course.model';
 import { CoursesService } from '../services/courses.service';
 import { CoursesCardListComponent } from '../courses-card-list/courses-card-list.component';
 
@@ -35,7 +35,7 @@ export class HomeComponent {
     public async loadCourses(): Promise<void> {
         try {
             const courses = await this.coursesService.loadAllCourses();
-            this.#courses.set(courses);
+            this.#courses.set(courses.sort(sortCoursesBySeqNo));
         } catch (err) {
             alert('Error loading courses');
             console.log(err);
