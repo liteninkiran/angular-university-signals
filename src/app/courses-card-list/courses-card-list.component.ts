@@ -1,5 +1,8 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Course } from '../models/course.model';
+import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { EditCourseDialogData } from '../edit-course-dialog/edit-course-dialog.data.model';
 
 @Component({
     selector: 'courses-card-list',
@@ -9,4 +12,16 @@ import { Course } from '../models/course.model';
 })
 export class CoursesCardListComponent {
     public courses = input.required<Course[]>();
+    public dialog = inject(MatDialog);
+
+    public async onEditCourse(course: Course): Promise<void> {
+        (document.activeElement as HTMLElement)?.blur();
+        const data: EditCourseDialogData = {
+            mode: 'update',
+            title: 'Edit Course',
+            course,
+        };
+        const newCourse = await openEditCourseDialog(this.dialog, data);
+        console.log('Course edited', newCourse);
+    }
 }
