@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { Course } from '../models/course.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { GetCoursesResponse } from '../models/get-courses.response';
 import { firstValueFrom } from 'rxjs';
+import { SkipLoading } from '../loading/skip-loading.component';
 
 @Injectable({
     providedIn: 'root',
@@ -14,7 +15,10 @@ export class CoursesService {
 
     public loadAllCourses = async (): Promise<Course[]> => {
         const url = `${this.env.apiRoot}/courses`;
-        const courses$ = this.http.get<GetCoursesResponse>(url);
+        // Set to true to turn off loading indicator
+        const context = new HttpContext().set(SkipLoading, false);
+        const options = { context };
+        const courses$ = this.http.get<GetCoursesResponse>(url, options);
         const response = await firstValueFrom(courses$);
         return response.courses;
     };
