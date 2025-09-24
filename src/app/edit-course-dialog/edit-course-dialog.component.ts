@@ -68,7 +68,7 @@ export class EditCourseDialogComponent {
 export const openEditCourseDialog = async (
     dialog: MatDialog,
     data: EditCourseDialogData,
-) => {
+): Promise<Course> => {
     const config = new MatDialogConfig();
     config.disableClose = true;
     config.autoFocus = true;

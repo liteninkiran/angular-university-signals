@@ -41,4 +41,12 @@ export class HomeComponent {
             console.log(err);
         }
     }
+
+    public onCourseUpdated(updatedCourse: Course): void {
+        const courses = this.#courses();
+        const mapFn = (course: Course) =>
+            course.id === updatedCourse.id ? updatedCourse : course;
+        const newCourses = courses.map(mapFn);
+        this.#courses.set(newCourses);
+    }
 }
