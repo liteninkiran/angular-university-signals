@@ -49,4 +49,16 @@ export class HomeComponent {
         const newCourses = courses.map(mapFn);
         this.#courses.set(newCourses);
     }
+
+    public async onCourseDeleted(id: string) {
+        try {
+            await this.coursesService.deleteCourse(id);
+            const filterFn = (course: Course) => course.id !== id;
+            const courses = this.#courses();
+            const newCourses = courses.filter(filterFn);
+            this.#courses.set(newCourses);
+        } catch (err) {
+            alert('Error deleting course');
+        }
+    }
 }

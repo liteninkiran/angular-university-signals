@@ -13,6 +13,7 @@ import { EditCourseDialogData } from '../edit-course-dialog/edit-course-dialog.d
 export class CoursesCardListComponent {
     public courses = input.required<Course[]>();
     public courseUpdated = output<Course>();
+    public courseDeleted = output<string>();
     public dialog = inject(MatDialog);
 
     public async onEditCourse(course: Course): Promise<void> {
@@ -25,5 +26,9 @@ export class CoursesCardListComponent {
         const newCourse = await openEditCourseDialog(this.dialog, data);
         console.log('Course edited', newCourse);
         this.courseUpdated.emit(newCourse);
+    }
+
+    public onDeleteCourse(course: Course): void {
+        this.courseDeleted.emit(course.id);
     }
 }
