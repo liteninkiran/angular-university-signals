@@ -40,14 +40,11 @@ export class HomeComponent {
 
     public async loadCourses(): Promise<void> {
         try {
-            this.loadingService.loadingOn();
             const courses = await this.coursesService.loadAllCourses();
             this.#courses.set(courses.sort(sortCoursesBySeqNo));
         } catch (err) {
             alert('Error loading courses');
             console.log(err);
-        } finally {
-            this.loadingService.loadingOff();
         }
     }
 
