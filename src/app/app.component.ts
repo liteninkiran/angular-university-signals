@@ -6,6 +6,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIconButton } from '@angular/material/button';
 import { LoadingIndicatorComponent } from './loading/loading.component';
+import { MessagesComponent } from './messages/messages.component';
 
 @Component({
     selector: 'app-root',
@@ -20,6 +21,7 @@ import { LoadingIndicatorComponent } from './loading/loading.component';
         MatToolbar,
         MatIconButton,
         LoadingIndicatorComponent,
+        MessagesComponent,
     ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',

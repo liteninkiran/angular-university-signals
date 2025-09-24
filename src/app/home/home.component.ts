@@ -6,7 +6,7 @@ import { CoursesCardListComponent } from '../courses-card-list/courses-card-list
 import { MatDialog } from '@angular/material/dialog';
 import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
 import { EditCourseDialogData } from '../edit-course-dialog/edit-course-dialog.data.model';
-import { LoadingService } from '../loading/loading.service';
+import { MessagesService } from '../messages/messages.service';
 
 const filterBeginner = (course: Course) => course.category === 'BEGINNER';
 const filterAdvanced = (course: Course) => course.category === 'ADVANCED';
@@ -26,7 +26,7 @@ export class HomeComponent {
     public beginnerCourses = computed(this.#begComputedFn);
     public advancedCourses = computed(this.#advComputedFn);
     public dialog = inject(MatDialog);
-    public loadingService = inject(LoadingService);
+    public messagesService = inject(MessagesService);
 
     constructor() {
         this.loadCourses();
@@ -37,7 +37,7 @@ export class HomeComponent {
             const courses = await this.coursesService.loadAllCourses();
             this.#courses.set(courses.sort(sortCoursesBySeqNo));
         } catch (err) {
-            alert('Error loading courses');
+            this.messagesService.showMessage('Error loading courses', 'error');
         }
     }
 
