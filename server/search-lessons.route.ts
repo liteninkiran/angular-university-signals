@@ -14,18 +14,14 @@ export function searchLessons(req: Request, res: Response) {
     }
 
     let filtered: any[] = allLessons;
-    console.log(`Filtering total lessons ${filtered?.length}`, allLessons);
 
     if (courseId) {
-        console.log(`Filtering by courseId ${parseInt(courseId)}`);
         filtered = filtered.filter(
             (lesson) => lesson.courseId == parseInt(courseId),
         );
-        console.log(`Filtered ${filtered?.length} results`);
     }
 
     if (query) {
-        console.log(`Filtering by query ${query}`);
         filtered = allLessons.filter(
             (lesson) =>
                 lesson?.description
@@ -33,7 +29,6 @@ export function searchLessons(req: Request, res: Response) {
                     ?.toLowerCase()
                     ?.search(query?.toLowerCase()) >= 0,
         );
-        console.log(`Filtered ${filtered?.length} results`);
     }
 
     const lessons = filtered.slice(0, 10);

@@ -24,7 +24,6 @@ export class CoursesCardListComponent {
             course,
         };
         const newCourse = await openEditCourseDialog(this.dialog, data);
-        console.log('Course edited', newCourse);
         this.courseUpdated.emit(newCourse);
     }
 

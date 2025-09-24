@@ -1,4 +1,4 @@
-import { Component, effect, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Lesson } from '../models/lesson.model';
 
@@ -14,11 +14,7 @@ export class ResourceDemoComponent {
 
     lessons = signal<Lesson[]>([]);
 
-    constructor() {
-        effect(() => {
-            console.log('searching lessons:', this.search());
-        });
-    }
+    constructor() {}
 
     searchLessons(search: string) {
         this.search.set(search);

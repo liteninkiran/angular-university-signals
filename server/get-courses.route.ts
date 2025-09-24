@@ -3,7 +3,6 @@ import { COURSES } from './db-data';
 import { Course } from '../src/app/models/course.model';
 
 export function getAllCourses(req: Request, res: Response) {
-    // console.log('ERROR loading courses!');
     // res.status(500).json({ message: 'error occurred.' });
     // return;
 

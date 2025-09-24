@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { Course, sortCoursesBySeqNo } from '../models/course.model';
 import { CoursesService } from '../services/courses.service';
@@ -29,13 +29,7 @@ export class HomeComponent {
     public loadingService = inject(LoadingService);
 
     constructor() {
-        effect(() => {
-            console.log('Beginner Courses', this.beginnerCourses());
-            console.log('Advanced Courses', this.advancedCourses());
-        });
-        this.loadCourses().then(() =>
-            console.log('*** All courses loaded ***', this.#courses()),
-        );
+        this.loadCourses();
     }
 
     public async loadCourses(): Promise<void> {
@@ -44,7 +38,6 @@ export class HomeComponent {
             this.#courses.set(courses.sort(sortCoursesBySeqNo));
         } catch (err) {
             alert('Error loading courses');
-            console.log(err);
         }
     }
 
