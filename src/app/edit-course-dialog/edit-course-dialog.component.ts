@@ -44,14 +44,19 @@ export class EditCourseDialogComponent {
         this.dialogRef.close();
     }
 
-    public onSave(): void {
+    public async onSave(): Promise<void> {
         const courseProps = this.form.value as Partial<Course>;
         if (this.data?.mode === 'update') {
-            this.saveCourse(this.data?.course!.id, courseProps);
+            await this.saveCourse(this.data?.course!.id, courseProps);
+        } else if (this.data?.mode === 'create') {
+            await this.createCourse(courseProps);
         }
     }
 
-    private async saveCourse(courseId: string, changes: Partial<Course>) {
+    private async saveCourse(
+        courseId: string,
+        changes: Partial<Course>,
+    ): Promise<void> {
         try {
             const updatedCourse = await this.coursesService.saveCourse(
                 courseId,
@@ -61,6 +66,16 @@ export class EditCourseDialogComponent {
         } catch (err) {
             console.error(err);
             alert('Failed to save course');
+        }
+    }
+
+    private async createCourse(course: Partial<Course>): Promise<void> {
+        try {
+            const newCourse = await this.coursesService.createCourse(course);
+            this.dialogRef.close(newCourse);
+        } catch (err) {
+            console.error(err);
+            alert('Failed to create course');
         }
     }
 }
