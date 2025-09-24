@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { LoadingIndicatorComponent } from '../loading/loading.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {
+    MAT_DIALOG_DATA,
     MatDialog,
     MatDialogConfig,
     MatDialogRef,
@@ -17,9 +18,27 @@ import { firstValueFrom } from 'rxjs';
     imports: [LoadingIndicatorComponent, ReactiveFormsModule],
 })
 export class EditCourseDialogComponent {
-    public diaglogRef = inject(MatDialogRef);
+    public dialogRef = inject(MatDialogRef);
+    public data: EditCourseDialogData = inject(MAT_DIALOG_DATA);
+    public fb = inject(FormBuilder);
+    public form = this.fb.group({
+        title: [''],
+        longDescription: [''],
+        category: [''],
+        iconUrl: [''],
+    });
+
+    constructor() {
+        this.form.patchValue({
+            title: this.data?.course?.title,
+            longDescription: this.data?.course?.longDescription,
+            category: this.data?.course?.category,
+            iconUrl: this.data?.course?.iconUrl,
+        });
+    }
+
     public onClose(): void {
-        this.diaglogRef.close();
+        this.dialogRef.close();
     }
 }
 
