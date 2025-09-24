@@ -9,6 +9,8 @@ import {
 } from '@angular/material/dialog';
 import { EditCourseDialogData } from './edit-course-dialog.data.model';
 import { firstValueFrom } from 'rxjs';
+import { Course } from '../models/course.model';
+import { CoursesService } from '../services/courses.service';
 
 @Component({
     selector: 'edit-course-dialog',
@@ -27,6 +29,7 @@ export class EditCourseDialogComponent {
         category: [''],
         iconUrl: [''],
     });
+    public coursesService = inject(CoursesService);
 
     constructor() {
         this.form.patchValue({
@@ -39,6 +42,26 @@ export class EditCourseDialogComponent {
 
     public onClose(): void {
         this.dialogRef.close();
+    }
+
+    public onSave(): void {
+        const courseProps = this.form.value as Partial<Course>;
+        if (this.data?.mode === 'update') {
+            this.saveCourse(this.data?.course!.id, courseProps);
+        }
+    }
+
+    private async saveCourse(courseId: string, changes: Partial<Course>) {
+        try {
+            const updatedCourse = await this.coursesService.saveCourse(
+                courseId,
+                changes,
+            );
+            this.dialogRef.close(updatedCourse);
+        } catch (err) {
+            console.error(err);
+            alert('Failed to save course');
+        }
     }
 }
 
