@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -11,12 +11,30 @@ const USER_STORAGE_KEY = 'user';
     providedIn: 'root',
 })
 export class AuthService {
-    http = inject(HttpClient);
-    router = inject(Router);
+    private http = inject(HttpClient);
+    private router = inject(Router);
 
     #userSignal = signal<User | null>(null);
-    public user = this.#userSignal.asReadonly();
-    isLoggedIn = computed(() => !!this.user());
+    private user = this.#userSignal.asReadonly();
+    public isLoggedIn = computed(() => !!this.user());
+
+    constructor() {
+        this.loadUserFromStorage();
+        effect(() => {
+            const user = this.user();
+            if (user) {
+                localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
+            }
+        });
+    }
+
+    private loadUserFromStorage() {
+        const json = localStorage.getItem(USER_STORAGE_KEY);
+        if (json) {
+            const user = JSON.parse(json);
+            this.#userSignal.set(user);
+        }
+    }
 
     public async login(email: string, password: string): Promise<User> {
         const url = `${environment.apiRoot}/login`;
