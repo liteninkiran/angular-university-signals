@@ -42,7 +42,6 @@ export class HomeComponent {
     }
 
     public onCourseUpdated(updatedCourse: Course): void {
-        if (updatedCourse === undefined) return;
         const courses = this.#courses();
         const mapFn = (course: Course) =>
             course.id === updatedCourse.id ? updatedCourse : course;
