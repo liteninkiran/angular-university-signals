@@ -3,12 +3,14 @@ import { Course } from '../models/course.model';
 import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { EditCourseDialogData } from '../edit-course-dialog/edit-course-dialog.data.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'courses-card-list',
     templateUrl: './courses-card-list.component.html',
     styleUrl: './courses-card-list.component.scss',
     standalone: true,
+    imports: [RouterLink],
 })
 export class CoursesCardListComponent {
     public courses = input.required<Course[]>();
