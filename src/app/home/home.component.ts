@@ -1,5 +1,14 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import {
+    Component,
+    computed,
+    effect,
+    ElementRef,
+    inject,
+    signal,
+    viewChild,
+} from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { MatTooltip } from '@angular/material/tooltip';
 import { Course, sortCoursesBySeqNo } from '../models/course.model';
 import { CoursesService } from '../services/courses.service';
 import { CoursesCardListComponent } from '../courses-card-list/courses-card-list.component';
@@ -16,7 +25,7 @@ const filterAdvanced = (course: Course) => course.category === 'ADVANCED';
     templateUrl: './home.component.html',
     styleUrl: './home.component.scss',
     standalone: true,
-    imports: [MatTabGroup, MatTab, CoursesCardListComponent],
+    imports: [MatTabGroup, MatTab, MatTooltip, CoursesCardListComponent],
 })
 export class HomeComponent {
     #courses = signal<Course[]>([]);
@@ -27,8 +36,14 @@ export class HomeComponent {
     public advancedCourses = computed(this.#advComputedFn);
     public dialog = inject(MatDialog);
     public messagesService = inject(MessagesService);
+    // public beginnersList = viewChild<CoursesCardListComponent>('beginnersList');
+    // public beginnersList = viewChild('beginnersList', { read: ElementRef });
+    public beginnersList = viewChild('beginnersList', { read: MatTooltip });
 
     constructor() {
+        effect(() => {
+            console.log('beginnersList', this.beginnersList());
+        });
         this.loadCourses();
     }
 
