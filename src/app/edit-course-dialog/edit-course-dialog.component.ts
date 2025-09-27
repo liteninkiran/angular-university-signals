@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { LoadingIndicatorComponent } from '../loading/loading.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -11,13 +11,19 @@ import { EditCourseDialogData } from './edit-course-dialog.data.model';
 import { firstValueFrom } from 'rxjs';
 import { Course } from '../models/course.model';
 import { CoursesService } from '../services/courses.service';
+import { CourseCategoryComboboxComponent } from '../course-category-combobox/course-category-combobox.component';
+import { CourseCategory } from '../models/course-category.model';
 
 @Component({
     selector: 'edit-course-dialog',
     templateUrl: './edit-course-dialog.component.html',
     styleUrl: './edit-course-dialog.component.scss',
     standalone: true,
-    imports: [LoadingIndicatorComponent, ReactiveFormsModule],
+    imports: [
+        LoadingIndicatorComponent,
+        ReactiveFormsModule,
+        CourseCategoryComboboxComponent,
+    ],
 })
 export class EditCourseDialogComponent {
     public dialogRef = inject(MatDialogRef);
@@ -26,18 +32,18 @@ export class EditCourseDialogComponent {
     public form = this.fb.group({
         title: [''],
         longDescription: [''],
-        category: [''],
         iconUrl: [''],
     });
     public coursesService = inject(CoursesService);
+    public category = signal<CourseCategory>('BEGINNER');
 
     constructor() {
         this.form.patchValue({
             title: this.data?.course?.title,
             longDescription: this.data?.course?.longDescription,
-            category: this.data?.course?.category,
             iconUrl: this.data?.course?.iconUrl,
         });
+        this.category.set(this.data.course!.category);
     }
 
     public onClose(): void {
@@ -46,6 +52,7 @@ export class EditCourseDialogComponent {
 
     public async onSave(): Promise<void> {
         const courseProps = this.form.value as Partial<Course>;
+        courseProps.category = this.category();
         if (this.data?.mode === 'update') {
             await this.saveCourse(this.data?.course!.id, courseProps);
         } else if (this.data?.mode === 'create') {
