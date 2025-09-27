@@ -13,6 +13,5 @@ export const isUserAuthenticated: CanActivateFn = (
 ) => {
     const authService = inject(AuthService);
     const router = inject(Router);
-    console.log(`User logged in: ${authService.isLoggedIn()}`);
     return authService.isLoggedIn() ? true : router.parseUrl('/login');
 };
