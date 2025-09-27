@@ -1,4 +1,12 @@
-import { Component, inject, input, output } from '@angular/core';
+import {
+    Component,
+    effect,
+    ElementRef,
+    inject,
+    input,
+    output,
+    viewChildren,
+} from '@angular/core';
 import { Course } from '../models/course.model';
 import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,6 +25,13 @@ export class CoursesCardListComponent {
     public courseUpdated = output<Course>();
     public courseDeleted = output<string>();
     public dialog = inject(MatDialog);
+    public courseCard = viewChildren<ElementRef>('courseCard');
+
+    constructor() {
+        effect(() => {
+            console.log('Course Card', this.courseCard());
+        });
+    }
 
     public async onEditCourse(course: Course): Promise<void> {
         (document.activeElement as HTMLElement)?.blur();
