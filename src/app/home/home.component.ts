@@ -1,7 +1,6 @@
 import {
     Component,
     computed,
-    effect,
     ElementRef,
     inject,
     signal,
@@ -41,9 +40,6 @@ export class HomeComponent {
     public beginnersList = viewChild('beginnersList', { read: MatTooltip });
 
     constructor() {
-        // effect(() => {
-        //     console.log('beginnersList', this.beginnersList());
-        // });
         this.loadCourses();
     }
 

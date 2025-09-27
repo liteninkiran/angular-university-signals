@@ -1,6 +1,5 @@
 import {
     Component,
-    effect,
     ElementRef,
     inject,
     input,
@@ -27,11 +26,7 @@ export class CoursesCardListComponent {
     public dialog = inject(MatDialog);
     public courseCard = viewChildren<ElementRef>('courseCard');
 
-    constructor() {
-        effect(() => {
-            console.log('Course Card', this.courseCard());
-        });
-    }
+    constructor() {}
 
     public async onEditCourse(course: Course): Promise<void> {
         (document.activeElement as HTMLElement)?.blur();

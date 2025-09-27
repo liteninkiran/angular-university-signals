@@ -26,7 +26,6 @@ export class LessonsComponent {
 
     public async onSearch(): Promise<void> {
         const query = this.searchInput()?.nativeElement.value;
-        console.log('search query', query);
         const results = await this.lessonsService.loadLessons({ query });
         this.lessons.set(results);
     }

@@ -22,7 +22,10 @@
         </textarea>
     </div>
 
-    <course-category-combobox label="Course category" [(value)]="category" />
+    <course-category-combobox label="Course category" [(value)]="category">
+        <div class="title" #title>Course Category</div>
+        <div class="title" #title>Another Title</div>
+    </course-category-combobox>
 
     <div class="form-control">
         <label for="image">Course image:</label>
