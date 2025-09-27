@@ -3,12 +3,15 @@
 
     <div class="form-control edit-lesson">
         <label>Lesson title:</label>
-        <input placeholder="Enter course title" />
+        <input
+            placeholder="Enter course title"
+            [value]="lesson()?.description"
+        />
     </div>
 </div>
 
 <div class="form-actions">
     <button class="btn">Save</button>
 
-    <button class="btn">Cancel</button>
+    <button class="btn" (click)="onCancel()">Cancel</button>
 </div>
