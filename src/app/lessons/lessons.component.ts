@@ -40,4 +40,10 @@ export class LessonsComponent {
     public onCancel(): void {
         this.mode.set('master');
     }
+
+    public onLessonUpdated(lesson: Lesson): void {
+        const mapFn = (l: Lesson) => (l.id === lesson.id ? lesson : l);
+        const updateFn = (lessons: Lesson[]) => lessons.map(mapFn);
+        this.lessons.update(updateFn);
+    }
 }

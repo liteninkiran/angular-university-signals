@@ -25,6 +25,15 @@ export class LessonsService {
         return response.lessons;
     };
 
+    public saveLesson = async (
+        lessonId: string,
+        changes: Partial<Lesson>,
+    ): Promise<Lesson> => {
+        const url = `${this.env.apiRoot}/lessons/${lessonId}`;
+        const saveLesson$ = this.http.put<Lesson>(url, changes);
+        return firstValueFrom(saveLesson$);
+    };
+
     private setParams(config: Config): HttpParams {
         const { courseId, query } = config;
         let params = new HttpParams();
