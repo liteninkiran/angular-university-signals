@@ -23,6 +23,12 @@ export class CoursesService {
         return response.courses;
     };
 
+    public getCourseById = async (courseId: string): Promise<Course> => {
+        const url = `${this.env.apiRoot}/courses/${courseId}`;
+        const course$ = this.http.get<Course>(url);
+        return firstValueFrom(course$);
+    };
+
     public createCourse = async (course: Partial<Course>): Promise<Course> => {
         const url = `${this.env.apiRoot}/courses`;
         const course$ = this.http.post<Course>(url, course);
