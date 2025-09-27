@@ -5,7 +5,7 @@ import { MessagesService } from '../messages/messages.service';
 import { AuthService } from '../services/auth.service';
 
 const formDef = {
-    email: [''],
+    email: ['test@angular-university.io'],
     password: [''],
 };
 
