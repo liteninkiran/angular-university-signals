@@ -1,1 +1,31 @@
-<div class="lessons">Lessons</div>
+<div class="lessons">
+    @if (mode() == "master") {
+        <div class="header">
+            <h1>Search Lessons</h1>
+
+            <div class="form-control search-controls">
+                <input
+                    placeholder="Search for a lesson"
+                    (keyup.enter)="onSearch()"
+                    #search
+                />
+                <button class="btn search" (click)="onSearch()">Search</button>
+            </div>
+        </div>
+
+        @if (lessons().length > 0) {
+            <div class="table-container">
+                <table class="results-table">
+                    @for (lesson of lessons(); track lesson.id) {
+                        <tr>
+                            <td>{{ lesson.description }}</td>
+                            <td>{{ lesson.duration }}</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+    } @else {
+        <h1>Detail</h1>
+    }
+</div>
