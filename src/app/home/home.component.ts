@@ -1,4 +1,11 @@
-import { Component, computed, inject, Injector, signal } from '@angular/core';
+import {
+    Component,
+    computed,
+    effect,
+    inject,
+    Injector,
+    signal,
+} from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Course, sortCoursesBySeqNo } from '../models/course.model';
@@ -8,7 +15,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
 import { EditCourseDialogData } from '../edit-course-dialog/edit-course-dialog.data.model';
 import { MessagesService } from '../messages/messages.service';
-import { toObservable, ToObservableOptions } from '@angular/core/rxjs-interop';
+import {
+    toObservable,
+    ToObservableOptions,
+    toSignal,
+} from '@angular/core/rxjs-interop';
+import { from } from 'rxjs';
 
 const filterBeginner = (course: Course) => course.category === 'BEGINNER';
 const filterAdvanced = (course: Course) => course.category === 'ADVANCED';
@@ -37,6 +49,12 @@ export class HomeComponent {
     // Other Services
     private dialog = inject(MatDialog);
     private injector = inject(Injector);
+    private options: ToObservableOptions = {
+        injector: this.injector,
+    };
+
+    // Observables
+    private courses$ = from(this.coursesService.loadAllCourses());
 
     constructor() {
         this.loadCourses();
@@ -84,10 +102,7 @@ export class HomeComponent {
     }
 
     public onToObservableExample1(): void {
-        const options: ToObservableOptions = {
-            injector: this.injector,
-        };
-        const courses$ = toObservable(this.#courses, options);
+        const courses$ = toObservable(this.#courses, this.options);
         courses$.subscribe(console.log);
     }
 
@@ -96,13 +111,15 @@ export class HomeComponent {
         numbers.set(1);
         numbers.set(2);
         numbers.set(3);
-        const options: ToObservableOptions = {
-            injector: this.injector,
-        };
-        const numbers$ = toObservable(numbers, options);
+        const numbers$ = toObservable(numbers, this.options);
         numbers.set(4);
         const fn = (val: number) => console.log(`Number: ${val}`);
         numbers$.subscribe(fn);
         numbers.set(5);
+    }
+
+    public onToSignalExample(): void {
+        const courses = toSignal(this.courses$, this.options);
+        effect(() => console.log(courses()), this.options);
     }
 }
