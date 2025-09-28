@@ -1,8 +1,6 @@
 import {
     Component,
-    contentChild,
     contentChildren,
-    effect,
     ElementRef,
     input,
     model,
@@ -21,9 +19,7 @@ export class CourseCategoryComboboxComponent {
     public value = model.required<CourseCategory>();
     public titles = contentChildren<ElementRef>('title');
 
-    constructor() {
-        effect(() => console.log('Title', this.titles()));
-    }
+    constructor() {}
 
     public onCategoryChanged(category: string): void {
         this.value.set(category as CourseCategory);

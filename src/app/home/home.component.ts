@@ -1,11 +1,4 @@
-import {
-    Component,
-    computed,
-    ElementRef,
-    inject,
-    signal,
-    viewChild,
-} from '@angular/core';
+import { Component, computed, inject, Injector, signal } from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Course, sortCoursesBySeqNo } from '../models/course.model';
@@ -15,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
 import { EditCourseDialogData } from '../edit-course-dialog/edit-course-dialog.data.model';
 import { MessagesService } from '../messages/messages.service';
+import { toObservable, ToObservableOptions } from '@angular/core/rxjs-interop';
 
 const filterBeginner = (course: Course) => course.category === 'BEGINNER';
 const filterAdvanced = (course: Course) => course.category === 'ADVANCED';
@@ -27,17 +21,22 @@ const filterAdvanced = (course: Course) => course.category === 'ADVANCED';
     imports: [MatTabGroup, MatTab, MatTooltip, CoursesCardListComponent],
 })
 export class HomeComponent {
+    // Signals
     #courses = signal<Course[]>([]);
+
+    // Compted Signals
     #begComputedFn = () => this.#courses().filter(filterBeginner);
     #advComputedFn = () => this.#courses().filter(filterAdvanced);
-    public coursesService = inject(CoursesService);
     public beginnerCourses = computed(this.#begComputedFn);
     public advancedCourses = computed(this.#advComputedFn);
-    public dialog = inject(MatDialog);
-    public messagesService = inject(MessagesService);
-    // public beginnersList = viewChild<CoursesCardListComponent>('beginnersList');
-    // public beginnersList = viewChild('beginnersList', { read: ElementRef });
-    public beginnersList = viewChild('beginnersList', { read: MatTooltip });
+
+    // Services
+    private coursesService = inject(CoursesService);
+    private messagesService = inject(MessagesService);
+
+    // Other Services
+    private dialog = inject(MatDialog);
+    private injector = inject(Injector);
 
     constructor() {
         this.loadCourses();
@@ -82,5 +81,13 @@ export class HomeComponent {
         if (newCourse === undefined) return;
         const newCourses = [...this.#courses(), newCourse];
         this.#courses.set(newCourses);
+    }
+
+    public onToObservableExample(): void {
+        const options: ToObservableOptions = {
+            injector: this.injector,
+        };
+        const courses$ = toObservable(this.#courses, options);
+        courses$.subscribe(console.log);
     }
 }
