@@ -83,11 +83,26 @@ export class HomeComponent {
         this.#courses.set(newCourses);
     }
 
-    public onToObservableExample(): void {
+    public onToObservableExample1(): void {
         const options: ToObservableOptions = {
             injector: this.injector,
         };
         const courses$ = toObservable(this.#courses, options);
         courses$.subscribe(console.log);
+    }
+
+    public onToObservableExample2(): void {
+        const numbers = signal(0);
+        numbers.set(1);
+        numbers.set(2);
+        numbers.set(3);
+        const options: ToObservableOptions = {
+            injector: this.injector,
+        };
+        const numbers$ = toObservable(numbers, options);
+        numbers.set(4);
+        const fn = (val: number) => console.log(`Number: ${val}`);
+        numbers$.subscribe(fn);
+        numbers.set(5);
     }
 }
