@@ -19,9 +19,8 @@ import {
     toObservable,
     ToObservableOptions,
     toSignal,
-    ToSignalOptions,
 } from '@angular/core/rxjs-interop';
-import { from, interval, startWith } from 'rxjs';
+import { catchError, from, interval, startWith } from 'rxjs';
 
 const filterBeginner = (course: Course) => course.category === 'BEGINNER';
 const filterAdvanced = (course: Course) => course.category === 'ADVANCED';
@@ -134,5 +133,22 @@ export class HomeComponent {
         effect(() => {
             console.log(`Number: ${numbers()}`);
         }, this.options);
+    }
+
+    public onToSignalExample3(): void {
+        try {
+            const courses$ = from(this.coursesService.loadAllCourses()).pipe(
+                catchError((err) => {
+                    console.log('Error in catchError', err);
+                    throw err;
+                }),
+            );
+            const courses = toSignal(courses$, this.options);
+            effect(() => {
+                console.log(`Courses:`, courses());
+            }, this.options);
+        } catch (err) {
+            console.log('Error in catch block', err);
+        }
     }
 }
