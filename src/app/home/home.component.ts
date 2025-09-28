@@ -19,8 +19,9 @@ import {
     toObservable,
     ToObservableOptions,
     toSignal,
+    ToSignalOptions,
 } from '@angular/core/rxjs-interop';
-import { from } from 'rxjs';
+import { from, interval, startWith } from 'rxjs';
 
 const filterBeginner = (course: Course) => course.category === 'BEGINNER';
 const filterAdvanced = (course: Course) => course.category === 'ADVANCED';
@@ -118,8 +119,20 @@ export class HomeComponent {
         numbers.set(5);
     }
 
-    public onToSignalExample(): void {
+    public onToSignalExample1(): void {
         const courses = toSignal(this.courses$, this.options);
         effect(() => console.log(courses()), this.options);
+    }
+
+    public onToSignalExample2(): void {
+        const number$ = interval(1000).pipe(startWith(0));
+        const numbers = toSignal(number$, {
+            injector: this.injector,
+            // initialValue: 0,
+            requireSync: true,
+        });
+        effect(() => {
+            console.log(`Number: ${numbers()}`);
+        }, this.options);
     }
 }
