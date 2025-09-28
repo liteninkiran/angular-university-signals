@@ -8,19 +8,18 @@ import { Lesson } from '../models/lesson.model';
     styleUrls: ['./resource-demo.component.scss'],
 })
 export class ResourceDemoComponent {
-    env = environment;
+    private env = environment;
 
-    search = signal<string>('');
-
-    lessons = signal<Lesson[]>([]);
+    public search = signal<string>('');
+    public lessons = signal<Lesson[]>([]);
 
     constructor() {}
 
-    searchLessons(search: string) {
+    public searchLessons(search: string): void {
         this.search.set(search);
     }
 
-    reset() {}
+    public reset(): void {}
 
-    reload() {}
+    public reload(): void {}
 }
